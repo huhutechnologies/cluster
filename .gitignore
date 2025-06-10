@@ -1,0 +1,4 @@
+sa.json
+.terraform**
+*.tfstate*
+terraform.tfvars
