@@ -1,7 +1,7 @@
 module "artifact_registry" {
   source          = "../modules/gc-artifact-registry"
   repository_name = var.gc_artifact_registry
-  region          = "us-central1"
+  region          = var.region
 
   # You can use module.artifact_registry.gke_registry_config if needed
 }

@@ -27,15 +27,18 @@ CLUSTER_NAME=simo-cluster
 # Artifact Registry name
 GC_ARTIFACT_REGISTRY=test-registry
 
-# enable Kubernetes Engine API
-echo https://console.developers.google.com/apis/api/container.googleapis.com/overview?project=$PROJECT_ID
+# enable APIs
+gcloud services enable container.googleapis.com cloudbuild.googleapis.com secretmanager.googleapis.com --project $PROJECT_ID
 
+# set tf variables
 rm *.tfstate* terraform.tfvars 
 echo 'project_id = "'${PROJECT_ID}'"' > terraform.tfvars
 echo 'acg_sa_email = "'${SA_EMAIL}'"' >> terraform.tfvars
 echo 'cluster_name = "'${CLUSTER_NAME}'"' >> terraform.tfvars
 echo 'region = "'${REGION}'"' >> terraform.tfvars
 echo 'gc_artifact_registry = "'${GC_ARTIFACT_REGISTRY}'"' >> terraform.tfvars
+
+# login to gcloud
 gcloud auth application-default login
 
 terraform init
