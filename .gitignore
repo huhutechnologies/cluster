@@ -2,3 +2,4 @@ sa.json
 .terraform**
 *.tfstate*
 terraform.tfvars
+*.github_app_token
