@@ -23,21 +23,25 @@ ZONE=$REGION-a
 PROJECT_ID=$(echo $SA | jq '.project_id' -r)
 SA_EMAIL=$(echo $SA | jq '.client_email' -r)
 CLUSTER_NAME=simo-cluster
-echo https://console.developers.google.com/apis/api/container.googleapis.com/overview?project=$PROJECT_ID
+
+# Artifact Registry name
+GC_ARTIFACT_REGISTRY=test-registry
 
 # enable Kubernetes Engine API
+echo https://console.developers.google.com/apis/api/container.googleapis.com/overview?project=$PROJECT_ID
+
 rm *.tfstate* terraform.tfvars 
 echo 'project_id = "'${PROJECT_ID}'"' > terraform.tfvars
 echo 'acg_sa_email = "'${SA_EMAIL}'"' >> terraform.tfvars
 echo 'cluster_name = "'${CLUSTER_NAME}'"' >> terraform.tfvars
 echo 'region = "'${REGION}'"' >> terraform.tfvars
+echo 'gc_artifact_registry = "'${GC_ARTIFACT_REGISTRY}'"' >> terraform.tfvars
 gcloud auth application-default login
 
 terraform init
 terraform plan
 terraform apply
 
-# module
 
 # login
 
