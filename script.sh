@@ -28,7 +28,7 @@ CLUSTER_NAME=simo-cluster
 GC_ARTIFACT_REGISTRY=test-registry
 
 # enable APIs
-gcloud services enable container.googleapis.com cloudbuild.googleapis.com secretmanager.googleapis.com --project $PROJECT_ID
+gcloud services enable sourcerepo.googleapis.com container.googleapis.com cloudbuild.googleapis.com secretmanager.googleapis.com --project $PROJECT_ID
 
 # set tf variables
 rm *.tfstate* terraform.tfvars 
@@ -40,6 +40,32 @@ echo 'gc_artifact_registry = "'${GC_ARTIFACT_REGISTRY}'"' >> terraform.tfvars
 
 # login to gcloud
 gcloud auth application-default login
+
+# Create a Cloud Source Repository for the application to build
+
+REPO_NAME="quickstart-docker"
+gcloud source repos create $REPO_NAME --project=$PROJECT_ID
+
+# Clone the empty repository
+mkdir -p ./tmp/repo-setup
+cd ./tmp/repo-setup
+gcloud source repos clone $REPO_NAME --project=$PROJECT_ID
+
+# Copy application/terraform-module content to the repository
+cp -r ../../../application/terraform-module/$REPO_NAME/* $REPO_NAME/
+
+# Commit and push the content
+cd $REPO_NAME
+git add .
+git commit -m "Initial commit of quickstart-docker content"
+git push origin main
+
+cd ../../../
+
+# Get the repository URI for use with the Cloud Build trigger
+REPO_URI="projects/$PROJECT_ID/locations/$REGION/repositories/$REPO_NAME"
+echo 'repo_uri = "'${REPO_URI}'"' >> terraform.tfvars
+
 
 terraform init
 terraform plan

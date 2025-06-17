@@ -22,3 +22,10 @@ variable "gc_artifact_registry" {
   description = "The name of the artifact registry to create in Google Cloud."
   type        = string
 }
+
+variable "repo_uri" {
+  description = "The URI of the local Cloud Source Repo to build"
+  type        = string
+}
+
+

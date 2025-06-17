@@ -13,3 +13,13 @@ module "gke_simple" {
   region       = var.region
   node_sa      = var.acg_sa_email
 }
+
+module "cloudbuild_trigger_local_source" {
+  source          = "../modules/cloudbuild_trigger_local_source"
+  trigger_name    = "local-source-trigger"
+  repo_name       = "quickstart-docker"
+  buildfile_path  = "cloudbuild.yaml"
+  region          = var.region
+  project_id      = var.project_id
+  service_account = var.acg_sa_email
+}

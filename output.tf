@@ -18,3 +18,8 @@ output "region" {
   value       = var.region
   description = "The GCP region."
 }
+
+output "cloudbuild_trigger_id" {
+  value       = module.cloudbuild_trigger_local_source.trigger_id
+  description = "The cloudbuild trigger id."
+}
